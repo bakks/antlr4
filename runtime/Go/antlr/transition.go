@@ -19,10 +19,10 @@ import (
 //  ATN transitions.</p>
 
 type Transition interface {
-	getTarget() ATNState
+	GetTarget() ATNState
 	setTarget(ATNState)
 	getIsEpsilon() bool
-	getLabel() *IntervalSet
+	GetLabel() *IntervalSet
 	getSerializationType() int
 	Matches(int, int, int) bool
 }
@@ -51,7 +51,7 @@ func NewBaseTransition(target ATNState) *BaseTransition {
 	return t
 }
 
-func (t *BaseTransition) getTarget() ATNState {
+func (t *BaseTransition) GetTarget() ATNState {
 	return t.target
 }
 
@@ -63,7 +63,7 @@ func (t *BaseTransition) getIsEpsilon() bool {
 	return t.isEpsilon
 }
 
-func (t *BaseTransition) getLabel() *IntervalSet {
+func (t *BaseTransition) GetLabel() *IntervalSet {
 	return t.intervalSet
 }
 

@@ -54,6 +54,10 @@ func NewIntervalSet() *IntervalSet {
 	return i
 }
 
+func (i *IntervalSet) GetIntervals() []*Interval {
+	return i.intervals
+}
+
 func (i *IntervalSet) first() int {
 	if len(i.intervals) == 0 {
 		return TokenInvalidType

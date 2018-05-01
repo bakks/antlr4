@@ -40,7 +40,7 @@ func (la *LL1Analyzer) getDecisionLookahead(s ATNState) []*IntervalSet {
 		look[alt] = NewIntervalSet()
 		lookBusy := NewSet(nil, nil)
 		seeThruPreds := false // fail to get lookahead upon pred
-		la.look1(s.GetTransitions()[alt].getTarget(), nil, BasePredictionContextEMPTY, look[alt], lookBusy, NewBitSet(), seeThruPreds, false)
+		la.look1(s.GetTransitions()[alt].GetTarget(), nil, BasePredictionContextEMPTY, look[alt], lookBusy, NewBitSet(), seeThruPreds, false)
 		// Wipe out lookahead for la alternative if we found nothing
 		// or we had a predicate when we !seeThruPreds
 		if look[alt].length() == 0 || look[alt].contains(LL1AnalyzerHitPred) {
@@ -173,7 +173,7 @@ func (la *LL1Analyzer) look1(s, stopState ATNState, ctx PredictionContext, look 
 		t := s.GetTransitions()[i]
 
 		if t1, ok := t.(*RuleTransition); ok {
-			if calledRuleStack.contains(t1.getTarget().GetRuleIndex()) {
+			if calledRuleStack.contains(t1.GetTarget().GetRuleIndex()) {
 				continue
 			}
 
@@ -181,16 +181,16 @@ func (la *LL1Analyzer) look1(s, stopState ATNState, ctx PredictionContext, look 
 			la.look3(stopState, newContext, look, lookBusy, calledRuleStack, seeThruPreds, addEOF, t1)
 		} else if t2, ok := t.(AbstractPredicateTransition); ok {
 			if seeThruPreds {
-				la.look1(t2.getTarget(), stopState, ctx, look, lookBusy, calledRuleStack, seeThruPreds, addEOF)
+				la.look1(t2.GetTarget(), stopState, ctx, look, lookBusy, calledRuleStack, seeThruPreds, addEOF)
 			} else {
 				look.addOne(LL1AnalyzerHitPred)
 			}
 		} else if t.getIsEpsilon() {
-			la.look1(t.getTarget(), stopState, ctx, look, lookBusy, calledRuleStack, seeThruPreds, addEOF)
+			la.look1(t.GetTarget(), stopState, ctx, look, lookBusy, calledRuleStack, seeThruPreds, addEOF)
 		} else if _, ok := t.(*WildcardTransition); ok {
 			look.addRange(TokenMinUserTokenType, la.atn.maxTokenType)
 		} else {
-			set := t.getLabel()
+			set := t.GetLabel()
 			if set != nil {
 				if _, ok := t.(*NotSetTransition); ok {
 					set = set.complement(TokenMinUserTokenType, la.atn.maxTokenType)
@@ -206,10 +206,10 @@ func (la *LL1Analyzer) look3(stopState ATNState, ctx PredictionContext, look *In
 	newContext := SingletonBasePredictionContextCreate(ctx, t1.followState.GetStateNumber())
 
 	defer func() {
-		calledRuleStack.remove(t1.getTarget().GetRuleIndex())
+		calledRuleStack.remove(t1.GetTarget().GetRuleIndex())
 	}()
 
-	calledRuleStack.add(t1.getTarget().GetRuleIndex())
-	la.look1(t1.getTarget(), stopState, newContext, look, lookBusy, calledRuleStack, seeThruPreds, addEOF)
+	calledRuleStack.add(t1.GetTarget().GetRuleIndex())
+	la.look1(t1.GetTarget(), stopState, newContext, look, lookBusy, calledRuleStack, seeThruPreds, addEOF)
 
 }

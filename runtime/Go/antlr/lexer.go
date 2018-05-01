@@ -20,6 +20,7 @@ type Lexer interface {
 	Recognizer
 
 	Emit() Token
+	GetAllTokens() []Token
 
 	SetChannel(int)
 	PushMode(int)

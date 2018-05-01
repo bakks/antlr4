@@ -39,6 +39,10 @@ type ATN struct {
 	states []ATNState
 }
 
+func (a *ATN) GetStates() []ATNState {
+	return a.states
+}
+
 func NewATN(grammarType int, maxTokenType int) *ATN {
 	return &ATN{
 		grammarType:          grammarType,

@@ -442,7 +442,7 @@ func (d *DefaultErrorStrategy) SingleTokenInsertion(recognizer Parser) bool {
 	// is free to conjure up and insert the missing token
 	atn := recognizer.GetInterpreter().atn
 	currentState := atn.states[recognizer.GetState()]
-	next := currentState.GetTransitions()[0].getTarget()
+	next := currentState.GetTransitions()[0].GetTarget()
 	expectingAtLL2 := atn.NextTokens(next, recognizer.GetParserRuleContext())
 	if expectingAtLL2.contains(currentSymbolType) {
 		d.ReportMissingToken(recognizer)
