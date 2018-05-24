@@ -23,6 +23,7 @@ type Transition interface {
 	setTarget(ATNState)
 	getIsEpsilon() bool
 	GetLabel() *IntervalSet
+	GetDirectLabel() int
 	getSerializationType() int
 	Matches(int, int, int) bool
 }
@@ -65,6 +66,10 @@ func (t *BaseTransition) getIsEpsilon() bool {
 
 func (t *BaseTransition) GetLabel() *IntervalSet {
 	return t.intervalSet
+}
+
+func (t *BaseTransition) GetDirectLabel() int {
+	return t.label
 }
 
 func (t *BaseTransition) getSerializationType() int {
@@ -178,6 +183,10 @@ func NewRuleTransition(ruleStart ATNState, ruleIndex, precedence int, followStat
 	return t
 }
 
+func (t *RuleTransition) GetRuleIndex() int {
+	return t.ruleIndex
+}
+
 func (t *RuleTransition) Matches(symbol, minVocabSymbol, maxVocabSymbol int) bool {
 	return false
 }
@@ -197,6 +206,10 @@ func NewEpsilonTransition(target ATNState, outermostPrecedenceReturn int) *Epsil
 	t.isEpsilon = true
 	t.outermostPrecedenceReturn = outermostPrecedenceReturn
 	return t
+}
+
+func (t *EpsilonTransition) GetOutermostPrecedenceReturn() int {
+	return t.outermostPrecedenceReturn
 }
 
 func (t *EpsilonTransition) Matches(symbol, minVocabSymbol, maxVocabSymbol int) bool {
@@ -278,6 +291,10 @@ func NewPredicateTransition(target ATNState, ruleIndex, predIndex int, isCtxDepe
 	return t
 }
 
+func (t *PredicateTransition) GetRuleIndex() int {
+	return t.ruleIndex
+}
+
 func (t *PredicateTransition) Matches(symbol, minVocabSymbol, maxVocabSymbol int) bool {
 	return false
 }
@@ -308,6 +325,10 @@ func NewActionTransition(target ATNState, ruleIndex, actionIndex int, isCtxDepen
 	t.isCtxDependent = isCtxDependent // e.g., $i ref in pred
 	t.isEpsilon = true
 	return t
+}
+
+func (t *ActionTransition) GetRuleIndex() int {
+	return t.ruleIndex
 }
 
 func (t *ActionTransition) Matches(symbol, minVocabSymbol, maxVocabSymbol int) bool {

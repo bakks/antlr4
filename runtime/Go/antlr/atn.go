@@ -39,6 +39,10 @@ type ATN struct {
 	states []ATNState
 }
 
+func (a *ATN) RuleToStartState(rule int) *RuleStartState {
+	return a.ruleToStartState[rule]
+}
+
 func (a *ATN) GetStates() []ATNState {
 	return a.states
 }
